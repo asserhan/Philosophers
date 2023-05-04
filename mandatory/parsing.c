@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 22:38:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/04/23 18:19:37 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:55:49 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int ft_is_space(char c)
 {
-	if (c == ' ' || c == '\t' || c >=9 && c <= 13)
-		return (1);
+	return (c == ' ' || c == '\t' || (c >=9 && c <= 13));
 }
+
 long	ft_atoi(char *str)
 {
 	int		i;

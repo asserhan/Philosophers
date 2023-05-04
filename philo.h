@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:25 by hasserao          #+#    #+#             */
-/*   Updated: 2023/04/23 23:21:43 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:01:48 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ typedef struct s_data
 	int is_dead;
 	pthread_mutex_t *forks;
 	pthread_mutex_t *print;
+	pthread_mutex_t lock;
 }		t_data;
 typedef struct s_philo
 {
 	pthread_t thread;
 	int		id;
-	pthread_mutex_t lock;
 	t_data	*data;
 
 }			t_philo;
