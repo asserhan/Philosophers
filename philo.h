@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:25 by hasserao          #+#    #+#             */
-/*   Updated: 2023/04/28 19:01:48 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/06 02:51:05 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <string.h>
+# include <sys/time.h>
 
 typedef struct s_data
 {
@@ -31,12 +32,20 @@ typedef struct s_data
 	pthread_mutex_t *forks;
 	pthread_mutex_t *print;
 	pthread_mutex_t lock;
+	t_philo *philo;
+
 }		t_data;
+
 typedef struct s_philo
 {
 	pthread_t thread;
 	int		id;
+	int		game_over;
+	int		count_eat;
+	int		eat_time;
 	t_data	*data;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t *left_fork;
 
 }			t_philo;
 void ft_parsing(int argc,char **argv);
