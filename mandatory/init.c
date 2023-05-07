@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 01:30:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/06 02:32:06 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:27:00 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void ft_init_philo(t_data *data)
 	{
 		data->philo[i].data = data;
 		data->philo[i].id = i + 1;
-		data->philo[i].game_over = data;
+		data->philo[i].is_dead = 0;
 		data->philo[i].count_eat = 0;
 		data->philo[i].eat_time = 0;
 	}
