@@ -1,8 +1,8 @@
  NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
 RM = rm -f
-SRC = mandatory/parsing.c mandatory/main.c
+SRC = mandatory/parsing.c mandatory/init.c mandatory/philo.c mandatory/utils.c mandatory/main.c
 OBJ = $(SRC:.c=.o)
 
 %.o: %.c philo.h
