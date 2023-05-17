@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 15:14:36 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/16 22:57:35 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/17 23:40:30 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,21 @@ int all_philos_eaten(t_philo *philo)
 	return(1);
 }
 
+int ft_usleep(long long time)
+{
+	long long start;
+	start = ft_get_time();
+	while(ft_get_time() - start < time)
+		usleep(100);
+	return(0);
+}
+
 void ft_print_mutex(t_philo *philo,char *str)
 {
-	//long long current_time;
+	if(philo->data->is_dead != 0 || all_philos_eaten(philo) == 0)
+		return ;
 	pthread_mutex_lock(&philo->data->print);
-	if(philo->data->is_dead == 0)
-		printf("%lld %d %s\n",ft_get_time()- philo->data->start_time,philo->id,str);
+	printf("%lld %d %s\n",ft_get_time()- philo->data->start_time,philo->id,str);
 	pthread_mutex_unlock(&philo->data->print);
 }
 void ft_eating(t_philo *philo)
@@ -35,21 +44,21 @@ void ft_eating(t_philo *philo)
 	ft_print_mutex(philo,"has taken a fork");
 	pthread_mutex_lock(&philo->eat_mutex);
 	ft_print_mutex(philo,"is eating");
-	philo->eating_status = 1;
-	philo->count_eat++;
 	philo->last_eat_time = ft_get_time();
-	usleep(philo->data->t_to_eat * 1000);
-	philo->eating_status = 0;
+	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->eat_mutex);
+	ft_usleep(philo->data->t_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	//philo->eating_status = 1;
+	//philo->eating_status = 0;
 
 }
 void ft_sleeping(t_philo *philo)
 {
-	philo->sleep_time = ft_get_time();
+	//philo->sleep_time = ft_get_time();
 	ft_print_mutex(philo,"is sleeping");
-	usleep(philo->data->t_to_sleep * 1000);
+	ft_usleep(philo->data->t_to_sleep);
 	ft_print_mutex(philo,"is thinking");
 }
 

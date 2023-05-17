@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:10 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/16 22:54:13 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:03:12 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ int main(int argc,char **argv)
 	t_data	*data;
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
-		ft_error_msg(data);
-	if (argc < 5 || argc > 6)
-		ft_error_msg(data);
-	ft_parsing(argc, argv);
+		return ft_error_msg(data);
 	memset(data,0,sizeof(t_data));
+	if (argc < 5 || argc > 6)
+		return ft_error_msg(data);
+	ft_parsing(argc, argv);
 	ft_init(data,argc,argv);
-	if(ft_dinning(data) == 1)
-		ft_error_msg(data);
+	if(ft_dinning(data))
+		return ft_error_msg(data);
 	ft_destroy(data);
 	return(0);
 }

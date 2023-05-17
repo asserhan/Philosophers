@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:25 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/16 22:57:10 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/17 16:38:13 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct s_data
 	int t_to_sleep;
 	int num_eat;
 	int eaten_philos;
-	int game_over;
 	long long start_time;
 	int is_dead;
 	pthread_mutex_t *forks;
@@ -48,7 +47,7 @@ typedef struct s_philo
 	int		eating_status;
 	long long last_eat_time;
 	long long sleep_time;
-
+	int meals_eaten;
 	t_data	*data;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t *left_fork;
@@ -64,5 +63,6 @@ void ft_print_mutex(t_philo *philo,char *str);
 void ft_eating(t_philo *philo);
 void ft_sleeping(t_philo *philo);
 int ft_dinning(t_data *data);
+int all_philos_eaten(t_philo *philo);
 
 #endif
