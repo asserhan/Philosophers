@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 01:30:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/16 23:00:26 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/16 23:22:32 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,9 @@ void ft_init_forks(t_data *data)
 	if(!data->forks)
 		ft_error_msg(data);
 	while (++i < data->num_philo)
-		pthread_mutex_init(&data->forks[i], NULL);
-	i = -1;
-	while (++i < data->num_philo)
 	{
-		if(i == data->num_philo - 1)
-		{
-			data->philo[i].right_fork = &data->forks[i];
-			data->philo[i].left_fork = &data->forks[0];
-		}
-		else
-		{
-			data->philo[i].right_fork = &data->forks[i + 1];
-			data->philo[i].left_fork = &data->forks[i];
-		}
+		pthread_mutex_init(&data->forks[i], NULL);
+
 	}
 }
 
@@ -50,6 +39,8 @@ void ft_init_philo(t_data *data)
 		data->philo[i].id = i + 1;
 		data->philo[i].count_eat = 0;
 		data->eaten_philos = 0;
+		data->philo[i].right_fork = &data->forks[i];
+		data->philo[i].left_fork = &data->forks[(i + 1) % data->num_philo];
 		pthread_mutex_init(&data->philo[i].eat_mutex, NULL);
 		//data->philo[i].eat_time = 0;
 	}
