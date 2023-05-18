@@ -6,14 +6,45 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:10 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/18 18:04:04 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/18 20:55:23 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-void ft_destroy(t_data *data)
+
+int	ft_meals(t_philo *philo)
 {
-	int i;
+	int	i;
+	int	done;
+
+	i = -1;
+	done = 0;
+	while (++i < philo->data->num_philo)
+	{
+		pthread_mutex_lock(&philo->eat_mutex);
+		if (ft_get_time() - philo[i].last_eat_time > philo->data->t_to_die)
+		{
+			ft_print_mutex(philo, "died");
+			philo->data->is_dead = 1;
+			pthread_mutex_unlock(&philo->eat_mutex);
+			pthread_mutex_lock(&philo->data->print);
+			return (1);
+		}
+		pthread_mutex_unlock(&philo->eat_mutex);
+		pthread_mutex_lock(&philo[i].meals_eaten_mutex);
+		if (philo[i].meals_eaten == philo->data->num_eat)
+			done++;
+		pthread_mutex_unlock(&philo[i].meals_eaten_mutex);
+	}
+	if (done == philo->data->num_philo)
+		return (1);
+	return (0);
+}
+
+void	ft_destroy(t_data *data)
+{
+	int	i;
+
 	i = -1;
 	while (++i < data->num_philo)
 	{
@@ -30,39 +61,51 @@ void ft_destroy(t_data *data)
 		free(data);
 }
 
-
-int ft_error_msg(t_data *data)
+int	ft_error_msg(t_data *data)
 {
-	write(2,"Error\n",6);
-	if(data)
+	write(2, "Error\n", 6);
+	if (data)
 		ft_destroy(data);
-	return(1);
+	return (1);
 }
-void tt(void)
+
+int	ft_dinning(t_data *data)
 {
-	system("leaks philo");
+	int	i;
+
+	if (the_routine(data))
+		return (ft_error_msg(data));
+	if (supervisor(data))
+		return (ft_error_msg(data));
+	i = -1;
+	while (++i < data->num_philo)
+	{
+		if (pthread_join(data->philo[i].thread, NULL))
+			return (ft_error_msg(data));
+	}
+	return (0);
 }
-int main(int argc,char **argv)
+
+int	main(int argc, char **argv)
 {
-	//atexit(tt);
 	t_data	*data;
+
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
-		return(ft_error_msg(data));
-	memset(data,0,sizeof(t_data));
+		return (ft_error_msg(data));
+	memset(data, 0, sizeof(t_data));
 	if (argc < 5 || argc > 6)
-		return(ft_error_msg(data));
-	if(ft_parsing(argc, argv))
-		return(ft_error_msg(data));
-	if(ft_init(data,argc,argv))
-		return(ft_error_msg(data));
-	if(ft_init_forks(data))
-		return(ft_error_msg(data));
-	if(ft_init_philo(data))
-		return(ft_error_msg(data));
-	if(ft_dinning(data))
-		return(ft_error_msg(data));
+		return (ft_error_msg(data));
+	if (ft_parsing(argc, argv))
+		return (ft_error_msg(data));
+	if (ft_init(data, argc, argv))
+		return (ft_error_msg(data));
+	if (ft_init_forks(data))
+		return (ft_error_msg(data));
+	if (ft_init_philo(data))
+		return (ft_error_msg(data));
+	if (ft_dinning(data))
+		return (ft_error_msg(data));
 	ft_destroy(data);
-	system("leaks philo");
-	return(0);
+	return (0);
 }
