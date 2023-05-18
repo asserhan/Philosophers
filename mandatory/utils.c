@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 15:14:36 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/18 19:42:45 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:02:30 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ int	ft_usleep(long long time)
 
 void	ft_print_mutex(t_philo *philo, char *str)
 {
+	//pthread_mutex_lock(&philo->meals_eaten_mutex);
 	if (philo->data->is_dead != 0 || philo->meals_eaten == philo->data->num_eat)
 		return ;
+	//pthread_mutex_unlock(&philo->meals_eaten_mutex);
 	pthread_mutex_lock(&philo->data->print);
 	printf("%lld %d %s\n", ft_get_time() - philo->data->start_time, philo->id,
 		str);

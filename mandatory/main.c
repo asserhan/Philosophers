@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:10 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/18 20:55:23 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:00:59 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int	ft_meals(t_philo *philo)
 		if (ft_get_time() - philo[i].last_eat_time > philo->data->t_to_die)
 		{
 			ft_print_mutex(philo, "died");
+			//pthread_mutex_lock(&philo->data->is_dead_mutex);
 			philo->data->is_dead = 1;
+			//pthread_mutex_unlock(&philo->data->is_dead_mutex);
 			pthread_mutex_unlock(&philo->eat_mutex);
 			pthread_mutex_lock(&philo->data->print);
 			return (1);
@@ -99,11 +101,7 @@ int	main(int argc, char **argv)
 	if (ft_parsing(argc, argv))
 		return (ft_error_msg(data));
 	if (ft_init(data, argc, argv))
-		return (ft_error_msg(data));
-	if (ft_init_forks(data))
-		return (ft_error_msg(data));
-	if (ft_init_philo(data))
-		return (ft_error_msg(data));
+		return (1);
 	if (ft_dinning(data))
 		return (ft_error_msg(data));
 	ft_destroy(data);

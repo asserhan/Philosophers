@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 01:30:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/18 19:52:15 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 00:01:16 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,25 @@ int	ft_init(t_data *data, int argc, char **argv)
 	data->t_to_die = ft_atoi(argv[2]);
 	data->t_to_eat = ft_atoi(argv[3]);
 	data->t_to_sleep = ft_atoi(argv[4]);
+	data->is_dead = 0;
+	if (pthread_mutex_init(&data->print, NULL))
+		return (1);
+	// if (pthread_mutex_init(&data->is_dead_mutex, NULL))
+	// 	return (1);
+	if (ft_init_forks(data))
+		return (ft_error_msg(data));
+	if (ft_init_philo(data))
+		return (ft_error_msg(data));
+	if (data->num_philo <= 0 || data->t_to_die <= 0 || data->t_to_eat <= 0
+		|| data->t_to_sleep <= 0)
+		return (ft_error_msg(data));
 	if (argc == 6)
 	{
 		data->num_eat = ft_atoi(argv[5]);
 		if (data->num_eat <= 0)
-			return (1);
+			return (ft_error_msg(data));
 	}
 	else
 		data->num_eat = -1;
-	if (data->num_philo <= 0 || data->t_to_die <= 0 || data->t_to_eat <= 0
-		|| data->t_to_sleep <= 0)
-		return (1);
-	data->is_dead = 0;
-	if (pthread_mutex_init(&data->print, NULL))
-		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:25 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/18 20:54:54 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/18 23:47:37 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_data
 	int				num_eat;
 	long long		start_time;
 	int				is_dead;
+	pthread_mutex_t is_dead_mutex;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	struct s_philo	*philo;
