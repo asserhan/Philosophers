@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:25 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/17 16:38:13 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:59:13 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct s_data
 	int eaten_philos;
 	long long start_time;
 	int is_dead;
+	int game_over;
+	pthread_mutex_t game_over_mutex;
 	pthread_mutex_t *forks;
 	pthread_mutex_t print;
 	struct s_philo  *philo;
@@ -48,6 +50,7 @@ typedef struct s_philo
 	long long last_eat_time;
 	long long sleep_time;
 	int meals_eaten;
+	pthread_mutex_t meals_eaten_mutex;
 	t_data	*data;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t *left_fork;
@@ -55,14 +58,17 @@ typedef struct s_philo
 
 }			t_philo;
 long	ft_atoi(char *str);
-void ft_parsing(int argc,char **argv);
+int ft_parsing(int argc,char **argv);
 int ft_error_msg(t_data *data);
-void ft_init(t_data *data,int argc,char **argv);
+int ft_init_forks(t_data *data);
+int ft_init_philo(t_data *data);
+int ft_init(t_data *data,int argc,char **argv);
 long long  ft_get_time();
 void ft_print_mutex(t_philo *philo,char *str);
 void ft_eating(t_philo *philo);
 void ft_sleeping(t_philo *philo);
 int ft_dinning(t_data *data);
 int all_philos_eaten(t_philo *philo);
+void *ft_routine_2(void *arg);
 
 #endif

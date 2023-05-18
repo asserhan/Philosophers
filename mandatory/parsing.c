@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 22:38:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/04/28 18:55:49 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:55:08 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ long	ft_atoi(char *str)
 		return(-1);
 	return (res);
 }
-void ft_parsing(int argc,char **argv)
+int ft_parsing(int argc,char **argv)
 {
 	int i;
 
@@ -50,9 +50,7 @@ void ft_parsing(int argc,char **argv)
 	while(++i < argc)
 	{
 		if(ft_atoi(argv[i]) == -1)
-		{
-			printf("Error : Wrong argument\n");
-			exit(EXIT_FAILURE);
-		}
+			return(1);
 	}
+	return(0);
 }
