@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 15:14:36 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 00:02:30 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 01:22:02 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ void	ft_print_mutex(t_philo *philo, char *str)
 		return ;
 	//pthread_mutex_unlock(&philo->meals_eaten_mutex);
 	pthread_mutex_lock(&philo->data->print);
+	pthread_mutex_lock(&philo->data->start_time_mutex);
 	printf("%lld %d %s\n", ft_get_time() - philo->data->start_time, philo->id,
 		str);
+	pthread_mutex_unlock(&philo->data->start_time_mutex);
 	pthread_mutex_unlock(&philo->data->print);
 }
 
@@ -48,13 +50,13 @@ void	ft_eating(t_philo *philo)
 	ft_print_mutex(philo, "has taken a fork");
 	pthread_mutex_lock(philo->right_fork);
 	ft_print_mutex(philo, "has taken a fork");
-	pthread_mutex_lock(&philo->eat_mutex);
 	ft_print_mutex(philo, "is eating");
+	pthread_mutex_lock(&philo->eat_mutex);
 	philo->last_eat_time = ft_get_time();
+	pthread_mutex_unlock(&philo->eat_mutex);
 	pthread_mutex_lock(&philo->meals_eaten_mutex);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meals_eaten_mutex);
-	pthread_mutex_unlock(&philo->eat_mutex);
 	ft_usleep(philo->data->t_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);

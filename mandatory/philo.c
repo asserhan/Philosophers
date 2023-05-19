@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 02:35:51 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/18 20:56:53 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 01:10:30 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	*ft_routine(void *arg)
 		{
 			pthread_mutex_lock(philo->left_fork);
 			ft_print_mutex(philo, "has taken a fork");
+			pthread_mutex_lock(&philo->eat_mutex);
 			philo->last_eat_time = ft_get_time();
+			pthread_mutex_unlock(&philo->eat_mutex);
 			return (NULL);
 		}
 		ft_eating(philo);
@@ -45,7 +47,9 @@ void	*ft_routine_2(void *arg)
 		{
 			pthread_mutex_lock(philo->left_fork);
 			ft_print_mutex(philo, "has taken a fork");
+			pthread_mutex_lock(&philo->eat_mutex);
 			philo->last_eat_time = ft_get_time();
+			pthread_mutex_unlock(&philo->eat_mutex);
 			return (NULL);
 		}
 		ft_sleeping(philo);
@@ -85,7 +89,9 @@ int	the_routine(t_data *data)
 	i = -1;
 	while (++i < data->num_philo)
 	{
+		pthread_mutex_lock(&data->start_time_mutex);
 		data->start_time = ft_get_time();
+		pthread_mutex_unlock(&data->start_time_mutex);
 		if (i % 2 == 0)
 		{
 			if (pthread_create(&data->philo[i].thread, NULL, &ft_routine,
