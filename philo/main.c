@@ -6,11 +6,11 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:10 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 01:01:42 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 02:39:01 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 int	ft_meals(t_philo *philo)
 {
@@ -21,21 +21,24 @@ int	ft_meals(t_philo *philo)
 	done = 0;
 	while (++i < philo->data->num_philo)
 	{
-		pthread_mutex_lock(&philo->eat_mutex);
+		pthread_mutex_lock(&philo[i].last_eat_time_mutex);
 		if (ft_get_time() - philo[i].last_eat_time > philo->data->t_to_die)
 		{
+			pthread_mutex_unlock(&philo[i].last_eat_time_mutex);
 			ft_print_mutex(philo, "died");
-			//pthread_mutex_lock(&philo->data->is_dead_mutex);
+			pthread_mutex_lock(&philo->data->is_dead_mutex);
 			philo->data->is_dead = 1;
-			//pthread_mutex_unlock(&philo->data->is_dead_mutex);
-			pthread_mutex_unlock(&philo->eat_mutex);
+			pthread_mutex_unlock(&philo->data->is_dead_mutex);
 			pthread_mutex_lock(&philo->data->print);
 			return (1);
 		}
-		pthread_mutex_unlock(&philo->eat_mutex);
+		pthread_mutex_unlock(&philo[i].last_eat_time_mutex);
 		pthread_mutex_lock(&philo[i].meals_eaten_mutex);
 		if (philo[i].meals_eaten == philo->data->num_eat)
+		{
+			pthread_mutex_unlock(&philo[i].meals_eaten_mutex);
 			done++;
+		}
 		pthread_mutex_unlock(&philo[i].meals_eaten_mutex);
 	}
 	if (done == philo->data->num_philo)
@@ -51,7 +54,6 @@ void	ft_destroy(t_data *data)
 	while (++i < data->num_philo)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
-		pthread_mutex_destroy(&data->philo[i].eat_mutex);
 		pthread_detach(data->philo[i].thread);
 	}
 	pthread_mutex_destroy(&data->print);
@@ -87,7 +89,6 @@ int	ft_dinning(t_data *data)
 	}
 	return (0);
 }
-
 int	main(int argc, char **argv)
 {
 	t_data	*data;

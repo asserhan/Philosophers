@@ -6,11 +6,11 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 22:38:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/18 19:31:37 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 02:36:18 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 int	ft_is_space(char c)
 {

@@ -6,11 +6,11 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 01:30:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 01:08:40 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 02:36:04 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 int	ft_init_forks(t_data *data)
 {
@@ -39,14 +39,14 @@ int	ft_init_philo(t_data *data)
 		return (ft_error_msg(data));
 	while (++i < data->num_philo)
 	{
-		if (pthread_mutex_init(&data->philo[i].eat_mutex, NULL))
+		if (pthread_mutex_init(&data->philo[i].last_eat_time_mutex, NULL))
 			return (ft_error_msg(data));
 		if (pthread_mutex_init(&data->philo[i].meals_eaten_mutex, NULL))
 			return (ft_error_msg(data));
+		/////
 		data->philo[i].id = i + 1;
 		data->philo[i].right_fork = &data->forks[i];
 		data->philo[i].left_fork = &data->forks[(i + 1) % data->num_philo];
-		
 		data->philo[i].last_eat_time = ft_get_time();
 		data->philo[i].meals_eaten = 0;
 		data->philo[i].data = data;
@@ -61,14 +61,17 @@ int	ft_init(t_data *data, int argc, char **argv)
 	data->t_to_eat = ft_atoi(argv[3]);
 	data->t_to_sleep = ft_atoi(argv[4]);
 	data->is_dead = 0;
+	if (pthread_mutex_init(&data->start_time_mutex, NULL))
+		return (1);
 	if (pthread_mutex_init(&data->print, NULL))
 		return (1);
-	if (pthread_mutex_init(&data->start_time_mutex, NULL))
+	if (pthread_mutex_init(&data->is_dead_mutex, NULL))
 		return (1);
 	if (ft_init_forks(data))
 		return (ft_error_msg(data));
 	if (ft_init_philo(data))
 		return (ft_error_msg(data));
+
 	if (data->num_philo <= 0 || data->t_to_die <= 0 || data->t_to_eat <= 0
 		|| data->t_to_sleep <= 0)
 		return (ft_error_msg(data));

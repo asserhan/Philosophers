@@ -6,27 +6,41 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 02:35:51 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 01:10:30 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 02:35:56 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 void	*ft_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->data->is_dead == 0
-		&& philo->meals_eaten != philo->data->num_eat)
+
+	while (1)
 	{
+		pthread_mutex_lock(&philo->meals_eaten_mutex);
+		if (philo->meals_eaten == philo->data->num_eat)
+		{
+			pthread_mutex_unlock(&philo->meals_eaten_mutex);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->meals_eaten_mutex);
+		pthread_mutex_lock(&philo->data->is_dead_mutex);
+		if (philo->data->is_dead == 1)
+		{
+			pthread_mutex_unlock(&philo->data->is_dead_mutex);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->data->is_dead_mutex);
 		if (philo->data->num_philo == 1)
 		{
 			pthread_mutex_lock(philo->left_fork);
 			ft_print_mutex(philo, "has taken a fork");
-			pthread_mutex_lock(&philo->eat_mutex);
+			pthread_mutex_lock(&philo->last_eat_time_mutex);
 			philo->last_eat_time = ft_get_time();
-			pthread_mutex_unlock(&philo->eat_mutex);
+			pthread_mutex_unlock(&philo->last_eat_time_mutex);
 			return (NULL);
 		}
 		ft_eating(philo);
@@ -40,16 +54,29 @@ void	*ft_routine_2(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->data->is_dead == 0
-		&& philo->meals_eaten != philo->data->num_eat)
+	while (1)
 	{
+		pthread_mutex_lock(&philo->meals_eaten_mutex);
+		if (philo->meals_eaten == philo->data->num_eat)
+		{
+			pthread_mutex_unlock(&philo->meals_eaten_mutex);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->meals_eaten_mutex);
+		pthread_mutex_lock(&philo->data->is_dead_mutex);
+		if (philo->data->is_dead == 1)
+		{
+			pthread_mutex_unlock(&philo->data->is_dead_mutex);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&philo->data->is_dead_mutex);
 		if (philo->data->num_philo == 1)
 		{
 			pthread_mutex_lock(philo->left_fork);
 			ft_print_mutex(philo, "has taken a fork");
-			pthread_mutex_lock(&philo->eat_mutex);
+			pthread_mutex_lock(&philo->last_eat_time_mutex);
 			philo->last_eat_time = ft_get_time();
-			pthread_mutex_unlock(&philo->eat_mutex);
+			pthread_mutex_unlock(&philo->last_eat_time_mutex);
 			return (NULL);
 		}
 		ft_sleeping(philo);
