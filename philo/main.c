@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 21:50:10 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 02:39:01 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 04:05:14 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,7 @@ int	ft_meals(t_philo *philo)
 			return (1);
 		}
 		pthread_mutex_unlock(&philo[i].last_eat_time_mutex);
-		pthread_mutex_lock(&philo[i].meals_eaten_mutex);
-		if (philo[i].meals_eaten == philo->data->num_eat)
-		{
-			pthread_mutex_unlock(&philo[i].meals_eaten_mutex);
-			done++;
-		}
-		pthread_mutex_unlock(&philo[i].meals_eaten_mutex);
+		ft_check_meals(philo, i, done);
 	}
 	if (done == philo->data->num_philo)
 		return (1);
@@ -89,6 +83,7 @@ int	ft_dinning(t_data *data)
 	}
 	return (0);
 }
+
 int	main(int argc, char **argv)
 {
 	t_data	*data;

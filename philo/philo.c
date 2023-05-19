@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 02:35:51 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 02:35:56 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 03:36:54 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	*ft_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-
 	while (1)
 	{
 		pthread_mutex_lock(&philo->meals_eaten_mutex);
@@ -34,15 +33,8 @@ void	*ft_routine(void *arg)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&philo->data->is_dead_mutex);
-		if (philo->data->num_philo == 1)
-		{
-			pthread_mutex_lock(philo->left_fork);
-			ft_print_mutex(philo, "has taken a fork");
-			pthread_mutex_lock(&philo->last_eat_time_mutex);
-			philo->last_eat_time = ft_get_time();
-			pthread_mutex_unlock(&philo->last_eat_time_mutex);
+		if (one_philo(philo))
 			return (NULL);
-		}
 		ft_eating(philo);
 		ft_sleeping(philo);
 	}
@@ -70,15 +62,8 @@ void	*ft_routine_2(void *arg)
 			return (NULL);
 		}
 		pthread_mutex_unlock(&philo->data->is_dead_mutex);
-		if (philo->data->num_philo == 1)
-		{
-			pthread_mutex_lock(philo->left_fork);
-			ft_print_mutex(philo, "has taken a fork");
-			pthread_mutex_lock(&philo->last_eat_time_mutex);
-			philo->last_eat_time = ft_get_time();
-			pthread_mutex_unlock(&philo->last_eat_time_mutex);
+		if (one_philo(philo))
 			return (NULL);
-		}
 		ft_sleeping(philo);
 		ft_eating(philo);
 	}

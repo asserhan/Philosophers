@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 15:14:36 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 02:36:28 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 03:15:16 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_print_mutex(t_philo *philo, char *str)
 		pthread_mutex_unlock(&philo->data->is_dead_mutex);
 		return ;
 	}
-
 	pthread_mutex_unlock(&philo->data->is_dead_mutex);
 	pthread_mutex_unlock(&philo->meals_eaten_mutex);
 	pthread_mutex_lock(&philo->data->print);

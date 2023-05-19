@@ -6,7 +6,7 @@
 /*   By: hasserao <hasserao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 22:38:16 by hasserao          #+#    #+#             */
-/*   Updated: 2023/05/19 02:36:18 by hasserao         ###   ########.fr       */
+/*   Updated: 2023/05/19 03:14:32 by hasserao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,13 @@ int	ft_parsing(int argc, char **argv)
 			return (1);
 	}
 	return (0);
+}
+
+void	ft_read_args(t_data *data, char **argv)
+{
+	data->num_philo = ft_atoi(argv[1]);
+	data->t_to_die = ft_atoi(argv[2]);
+	data->t_to_eat = ft_atoi(argv[3]);
+	data->t_to_sleep = ft_atoi(argv[4]);
+	data->is_dead = 0;
 }
