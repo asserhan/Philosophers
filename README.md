@@ -1,6 +1,6 @@
-# Philosophers
-This project is about Threads, mutexes and semaphores
+
 <div align='center'> <h1>Philosophers</h1> </div>
+This project is about Threads, mutexes and semaphores
 <p align='center'>I never thought philosophy would be so deadly</p>
 <p align='center'>Dining philosophers problem's solution for 42 cursus project</p>
 
